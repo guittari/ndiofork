@@ -16,6 +16,7 @@ setup(
     name='ndio',
     packages=[
         'ndio',
+        'ndio.main',
         'ndio.convert',
         'ndio.ramon',
         'ndio.remote',

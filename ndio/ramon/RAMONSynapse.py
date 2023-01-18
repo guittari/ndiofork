@@ -3,7 +3,7 @@ from .enums import *
 from .errors import *
 import numpy
 
-from .RAMONVolume import RAMONVolume
+from .RAMONROI import RAMONVolume
 
 
 class RAMONSynapse(RAMONVolume):

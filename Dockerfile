@@ -1,31 +1,17 @@
-FROM ubuntu:14.04
-MAINTAINER Alex Baden / Neurodata (neurodata.io)
-
-RUN apt-get clean 
+FROM python:3.9-slim-buster
+LABEL maintainer="Nicole Guittari"
+LABEL version="0.2.0"
+LABEL description="A Docker image for running the Python version of ndio with RAMON Updates"
 RUN apt-get update
-RUN apt-get -y upgrade 
-
-RUN apt-get -y install build-essential
-
-RUN apt-get -y install \
-  python-pip \
-  python-all-dev \
-  zlib1g-dev \
-  libjpeg8-dev \
-  libtiff4-dev \
-  libfreetype6-dev \
-  liblcms2-dev \
-  libwebp-dev \
-  tcl8.5-dev \ 
-  tk8.5-dev \ 
-  python-tk \
-  libhdf5-dev \
-  git vim 
-
-# install numpy
+RUN apt-get -y install gcc
+WORKDIR /app
+RUN pip install poetry
+COPY poetry.lock .
+COPY pyproject.toml .
+RUN poetry install
 RUN pip install numpy 
-
-# install ndio
+RUN pip install blosc 
 RUN pip install ndio
-
-
+COPY . .
+EXPOSE 8000
+CMD ["poetry", "run", "flask", "-A", "ndio.main:app", "run", "--host=0.0.0.0"]

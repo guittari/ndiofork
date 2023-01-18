@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BossDB BICCN Metadata</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css" />
+    <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/styles/default.min.css"> -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/styles/base16/eighties.min.css" />
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/highlight.min.js"></script>
+
+    <style type="text/css">
+        /* pre {
+            margin: 1em;
+            padding: 1em;
+            border: 1px solid #dededeaa;
+            border-radius: 4px;
+        } */
+        div.banner {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full-width */
+            font-size: 0.9em;
+            font-weight: bold;
+            background-color: #50d282;
+            padding: 0.25em;
+            width: 100% !important;
+            text-align: center;
+            top: 0;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="banner">
+        <p>
+            The BossDB natural language query engine has moved, and is now available at <a
+                href="https://queries.bossdb.org/">queries.bossdb.org</a>.
+        </p>
+    </div>
+    <div>
+        <p><br /></p>
+    </div>
+    <div>
+        <h1>BossDB BICCN Metadata</h1>
+        <p>
+            This application hosts BICCN-compatible metadata for the
+            <a href="https://bossdb.org">BossDB</a> database.
+        </p>
+        <p>
+            The root of this versioned API is available at
+            <a href="https://metadata.bossdb.org/api/v1/">https://metadata.bossdb.org/api/v1/</a>. Each endpoint
+            response will include a key titled <code>endpoints</code> which can be used to navigate up and down the
+            API hierarchy. You can also reach an API site map in the response of the root endpoint under the key
+            <code>endpoints</code>.
+        </p>
+        <p>To get started, try a sample of the code below.</p>
+        <p>For more information, or to report an issue, please contact <a
+                href="mailto:metadata@bossdb.org">metadata@bossdb.org</a>.</p>
+        <hr />
+        <h2>Sample Code</h2>
+
+        <h3>List experiments</h3>
+        <details open>
+            <summary>Python</summary>
+            <pre><code>import requests
+
+result = requests.get("https://metadata.bossdb.org/api/v1/experiments").json()
+print(result)
+</code></pre>
+        </details>
+
+        <details>
+            <summary>JavaScript</summary>
+            <pre><code>fetch("https://metadata.bossdb.org/api/v1/experiments")
+    .then(response => response.json())
+    .then(result => console.log(result));
+</code></pre>
+        </details>
+
+        <details>
+            <summary>cURL</summary>
+            <pre><code>curl https://metadata.bossdb.org/api/v1/experiments
+</code></pre>
+        </details>
+
+        <h3>Get a specific experiment</h3>
+        <details open>
+            <summary>Python</summary>
+            <pre><code>import requests
+
+experiment_id = "XXX"
+result = requests.get(f"https://metadata.bossdb.org/api/v1/experiments/{experiment_id}").json()
+print(result)
+</code></pre>
+        </details>
+
+        <details>
+            <summary>JavaScript</summary>
+            <pre><code>const experiment_id = "XXX";
+
+fetch(`https://metadata.bossdb.org/api/v1/experiments/${experiment_id}`)
+    .then(response => response.json())
+    .then(result => console.log(result));
+</code></pre>
+        </details>
+
+        <details>
+            <summary>cURL</summary>
+            <pre><code>experiment_id="XXX"
+curl https://metadata.bossdb.org/api/v1/experiments/${experiment_id}
+</code></pre>
+        </details>
+
+        <h3>Query the list of channels</h3>
+
+        <details open>
+            <summary>Python</summary>
+            <pre><code>import requests
+
+query = {
+    "ChannelType": "Image"
+}
+
+result = requests.post("https://metadata.bossdb.org/api/v1/channels", json=query).json()
+print(result)
+</code></pre>
+        </details>
+
+        <details>
+            <summary>JavaScript</summary>
+            <pre><code>const query = {
+    "ChannelType": "Image"
+};
+
+fetch("https://metadata.bossdb.org/api/v1/channels", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(query)
+})
+    .then(response => response.json())
+    .then(result => console.log(result));
+</code></pre>
+        </details>
+
+        <details>
+            <summary>cURL</summary>
+            <pre><code>query='{"ChannelType": "Image"}'
+curl -X POST -H "Content-Type: application/json" -d "${query}" https://metadata.bossdb.org/api/v1/channels
+</code></pre>
+        </details>
+
+        <h3>Get the schema for the <code>Collections</code> resource</h3>
+        <details open>
+            <summary>Python</summary>
+            <pre><code>import requests
+
+result = requests.get("https://metadata.bossdb.org/api/v1/collections/schema").json()
+print(result)
+</code></pre>
+        </details>
+
+        <details>
+            <summary>JavaScript</summary>
+            <pre><code>fetch("https://metadata.bossdb.org/api/v1/collections/schema")
+    .then(response => response.json())
+    .then(result => console.log(result));
+</code></pre>
+        </details>
+
+        <details>
+            <summary>cURL</summary>
+            <pre><code>curl https://metadata.bossdb.org/api/v1/collections/schema
+</code></pre>
+        </details>
+
+    </div>
+
+
+    <script>hljs.highlightAll();</script>
+
+
+</body>
+
+</html>

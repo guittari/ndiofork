@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+  metadata_mongodb:
+    image: mongo:latest
+    command: mongod --port 27020
+    ports:
+      - '27020:27020'
+    # volumes:
+    #   - ./data:/data/db
+    restart: always
+  metadata_web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: httpserver
+    ports:
+      - 8010:8000
+    environment:
+      - MONGO_HOST=metadata_mongodb
+      - MONGO_PORT=27020
+      - MONGO_DB=metadata
+    #   - MONGO_USER=biccn
+    #   - MONGO_PASS=biccn
+    restart: always
+    depends_on:
+      - metadata_mongodb
+    # links:
+    #   - mongodb
