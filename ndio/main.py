@@ -95,5 +95,20 @@ for endpoint_name, collection_name, type_name in [
         methods=["GET"],
     )
 
+def json_compat_wrap(obj):
+    """
+    Convert a datetime object to a string.
+
+    Args:
+        obj (object): The object to convert.
+
+    Returns:
+        object: The converted object.
+
+    Examples:
+        >>> json_compat_wrap(datetime.datetime(2020, 1, 1))
+        '2020-01-01T00:00:00'
+    """
+    return json.loads(json_util.dumps(obj))
 
 ingest_from_xlsx(db, "ramondata.xlsx", delete_existing=True)

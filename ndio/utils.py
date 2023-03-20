@@ -3,7 +3,22 @@ import uuid
 import time
 from bson import json_util
 
+def json_compat_wrap(obj):
+    """
+    Convert a datetime object to a string.
 
+    Args:
+        obj (object): The object to convert.
+
+    Returns:
+        object: The converted object.
+
+    Examples:
+        >>> json_compat_wrap(datetime.datetime(2020, 1, 1))
+        '2020-01-01T00:00:00'
+    """
+    return json.loads(json_util.dumps(obj))
+    
 def create_new_sortable_unique_id() -> str:
     """
     Create a new unique ID that is sortable by time.
@@ -93,23 +108,6 @@ def get_schema_for_table(table: dict) -> dict:
             for column in table["columns"]
         },
     }
-
-
-def json_compat_wrap(obj):
-    """
-    Convert a datetime object to a string.
-
-    Args:
-        obj (object): The object to convert.
-
-    Returns:
-        object: The converted object.
-
-    Examples:
-        >>> json_compat_wrap(datetime.datetime(2020, 1, 1))
-        '2020-01-01T00:00:00'
-    """
-    return json.loads(json_util.dumps(obj))
 
 
 __all__ = [
