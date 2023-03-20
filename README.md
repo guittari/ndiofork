@@ -20,27 +20,29 @@ Clone repository, ndiofork by Guittari
 
 Save excel sheet, ramondata.xlsx in ~/ndiofork/ndio 
 
-cd ‘ndiofork’
+```
+cd ndiofork
+```
 
-‘brew install –cask docker’
-cd ‘ndio’
+```brew install –cask docker’```
+```cd ndio```
 
-‘Docker-compose up –d’
+```Docker-compose up –d```
 
 ## Getting it to run
 
-Run ‘poetry run flask -A main:app --debug run’
+```poetry run flask -A main:app --debug run```
 
-Manually start docker containers in app
+Manually start Docker containers in local application
 
 If you are getting errors derived from bson imports (i.e., from bson import json_utils), this is probably because of a name clash between bson and pymongo 
 
 To fix:
-* sudo pip uninstall bson 
-* sudo pip uninstall pymongo 
-* sudo pip install pymongo
+* ```sudo pip uninstall bson``` 
+* ```sudo pip uninstall pymongo```
+* ```sudo pip install pymongo```
 
-Go to Firefox, enter:
+To display json schema output, enter following URL's in Firefox:
 
 http://localhost:5000/api/v1/ramonneuron
 
