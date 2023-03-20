@@ -1,14 +1,6 @@
-# ndiofork 
-
-[![](https://img.shields.io/pypi/v/ndio.svg)](https://pypi.python.org/pypi/ndio)
-[![Build Status](https://travis-ci.org/neurodata/ndio.svg?branch=master)](https://travis-ci.org/neurodata/ndio)
-[![Code Climate](https://codeclimate.com/github/neurodata/ndio/badges/gpa.svg)](https://codeclimate.com/github/neurodata/ndio)
-![Downloads shield](https://img.shields.io/pypi/dm/ndio.svg)
-
+# ndiofork serves as a guideline in getting a metadata query set up for RAMON
 
 **ndio** is a Python 2 and 3 module that enables big-data neuroscience, as well as direct interfacing with NeuroData workflows and servers. More complete documentation is available at [the ndio documentation website](http://docs.neurodata.io/nddocs/ndio).
-
-ndio is now considered stable as of the 1.0 release in April 2016.
 
 ## Installation
 
@@ -22,22 +14,50 @@ pip install ndio
 
 Generally, installation failures can be fixed by running the same line again, which, yeah, that's super janky, whatever. If that still fails, try cloning the repository from https://github.com/neurodata/ndio and running `pip install -r requirements.txt`.
 
-If you're still having no luck, try checking out the `travis.yml` file in the main directory of the repository — these are the lines required to get ndio up and running on a totally blank Ubuntu 14.04 machine.
-
 ## Getting Started
 
-You can view a list of not-necessarily-too-up-to-date tutorials, and some information about getting started,
-over [here](<http://docs.neurodata.io/nddocs/ndio/tutorials.html>).
+Clone repository, ndiofork by Guittari
 
-## Contributing
+Save excel sheet, ramondata.xlsx in ~/ndiofork/ndio 
 
-Please submit bug reports, or get in touch at our [GitHub
-repository](<https://github.com/neurodata/ndio>). When contributing, please
-follow the [Contribution
-Guidelines](<https://github.com/neurodata/ndio/blob/master/CONTRIBUTING.md>).
+cd ‘ndiofork’
 
-## Documentation
+‘brew install –cask docker’
+cd ‘ndio’
 
-ndio is fully documented [here](<http://docs.neurodata.io/ndio/>).
+‘Docker-compose up –d’
 
-Submit bug reports [here](<https://github.com/neurodata/ndio/issues/new>).
+## Getting it to run
+
+Run ‘poetry run flask -A main:app --debug run’
+
+Manually start docker containers in app
+
+If you are getting errors derived from bson imports (i.e., from bson import json_utils), this is probably because of a name clash between bson and pymongo 
+
+To fix:
+* sudo pip uninstall bson 
+* sudo pip uninstall pymongo 
+* sudo pip install pymongo
+
+Go to Firefox, enter:
+
+http://localhost:5000/api/v1/ramonneuron
+
+http://localhost:5000/api/v1/ramonsynapse
+
+http://localhost:5000/api/v1/ramonsegment
+
+http://localhost:5000/api/v1/ramonsubcellular
+
+http://localhost:5000/api/v1/ramonroi
+
+
+
+
+
+
+
+
+
+
