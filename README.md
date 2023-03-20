@@ -34,7 +34,9 @@ brew install –cask docker
 cd ndio
 ```
 
-```Docker-compose up –d```
+```
+Docker-compose up –d
+```
 
 ## Getting it to run
 
