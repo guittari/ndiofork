@@ -47,6 +47,8 @@ To fix:
 To display json schema output, enter following URL's in Firefox:
 
 http://localhost:5000/api/v1/ramonneuron
+<img width="508" alt="image" src="https://user-images.githubusercontent.com/66258538/226370959-1123aa99-b0db-4a4e-841e-f5a6751bc4d4.png">
+
 
 http://localhost:5000/api/v1/ramonsynapse
 
