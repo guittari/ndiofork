@@ -1,6 +1,6 @@
 # ndiofork 
 
-This repository is a forked version of ndio that serves as a guideline in getting a metadata query set up for RAMON
+This repository is a forked version of ndio that serves as a guideline in getting a metadata query set up for RAMON created by Nicole Guittari
 
 **ndio** is a Python 2 and 3 module that enables big-data neuroscience, as well as direct interfacing with NeuroData workflows and servers. More complete documentation is available at [the ndio documentation website](http://docs.neurodata.io/nddocs/ndio).
 
