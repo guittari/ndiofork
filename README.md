@@ -63,7 +63,7 @@ http://localhost:5000/api/v1/ramonsubcellular
 
 http://localhost:5000/api/v1/ramonroi
 
-## Output 
+## Ouptut
 
 <img width="508" alt="image" src="https://user-images.githubusercontent.com/66258538/226371140-0d8b283b-18fe-4664-b961-aa1caef7db41.png">
 
@@ -77,6 +77,11 @@ http://localhost:5000/api/v1/ramonroi
 
 
 
+## Next Steps 
+
+Shifting away from manually entering in the CSV, ramondata.xlsx is an important goal to avoid manual errors, maintain consistency, and promote collaboration between members of the connectomic community. 
+
+Current efforts involve editing, /mossmetadataintegration/neurodata for the computational gathering of neuronal entities. 
 
 
 
