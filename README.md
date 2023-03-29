@@ -14,7 +14,7 @@ If you already have numpy installed, then simply run:
 pip install ndio
 ```
 
-Generally, installation failures can be fixed by running the same line again, which, yeah, that's super janky, whatever. If that still fails, try cloning the repository from https://github.com/neurodata/ndio and running `pip install -r requirements.txt`.
+Generally, installation failures can be fixed by running the same line again. If that still fails, try cloning the repository from https://github.com/neurodata/ndio and running `pip install -r requirements.txt`.
 
 ## Getting Started
 
