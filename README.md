@@ -8,7 +8,7 @@ This repository is a forked version of **ndio** that serves as a guideline in ge
 
 The first thing to do is to **install numpy**, which often does not jive well with the auto-installation process supported by `pip`.
 
-If you already have numpy installed, then simply run:
+If you already have numpy installed, run:
 
 ```
 pip install ndio
