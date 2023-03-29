@@ -6,7 +6,7 @@ This repository is a forked version of **ndio** that serves as a guideline in ge
 
 ## Installation
 
-Before you install ndio, you'll need to have a few prerequisites. The first thing to do is to **install numpy**, which often does not jive well with the auto-installation process supported by `pip`.
+The first thing to do is to **install numpy**, which often does not jive well with the auto-installation process supported by `pip`.
 
 If you already have numpy installed, then simply run:
 
