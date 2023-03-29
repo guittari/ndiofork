@@ -1,0 +1,199 @@
+import pathlib
+from typing import List, Union
+import json
+import io
+DEFAULT_CACHE_LOCATION = "~/.config/mossdb/cache"
+def _cache_get(root_path, uri, binary: bool = False):
+    uri = uri.replace("://", "---")
+    fname = pathlib.Path(f"{root_path}/{uri}").expanduser().resolve()
+    if fname.exists():
+        try:
+            if binary:
+                return (fname / "data.bin").read_bytes()
+            return json.loads((fname / "data.json").read_text())
+        except:
+            raise IndexError(fname)
+    raise IndexError()
+
+def _cache_set(root_path, uri, contents):
+    uri = uri.replace("://", "---")
+    fname = pathlib.Path(f"{root_path}/{uri}").expanduser().resolve()
+    # Create the directory if it doesn't exist:
+    fname.mkdir(exist_ok=True, parents=True)
+    if isinstance(contents, dict):
+        (fname / "data.json").write_text(json.dumps(contents))
+    else:
+        (fname / "data.bin").write_bytes(contents)
+
+class MossDBClient:
+    """
+    A client-side SDK for interacting with MossDB through Python.
+
+    For more details, see usage at:
+    https://github.com/aplbrain/mossDB/blob/master/mossdb/docs/Usage.md
+
+    """
+
+    def __init__(self, url: str, cache: Union[bool, str] = False) -> None:
+        """
+        Create a new client.
+
+        Arguments:
+            url (str): The URL of the API
+
+        Returns:
+            None
+
+        """
+        # Guarantee that we don't have extra slashiness:
+        self.url = url.rstrip("/") + "/"
+        cache_path = cache if isinstance(cache, str) else DEFAULT_CACHE_LOCATION
+        self._cache = (cache_path) if cache else False
+        if cache:
+            self._cache_location = pathlib.Path(cache_path).expanduser().resolve()
+
+    def _url(self, suffix: str) -> str:
+        """
+        Construct a URL for a service / endpoint.
+
+        Arguments:
+            suffix (str): The URL path (can start with slash)
+
+        Returns:
+            str: The full URL
+
+        """
+        return self.url + suffix.lstrip("/")
+
+    def get_metadata(self, uri: str) -> dict:
+        """
+        Get metadata for a URI.
+
+        Arguments:
+            uri (str): The URI to request
+
+        Returns:
+            dict: The data associated with this URI
+
+        """
+        if not valid_uri(uri):
+            raise ValueError(
+                f"'{uri}' is not a valid URI. URIs must be of the form [protocol]://[identifier] or [protocol]://[identifier]/[id]."
+                + f"\nValid protocols are: {PERMITTED_URIS}"
+            )
+        if self._cache:
+            try:
+                return _cache_get(self._cache, uri)
+            except IndexError:
+                pass
+        result = requests.get(self._url("/metadata"), headers={"uri": uri}).json()
+        if self._cache:
+            _cache_set(self._cache, uri, result)
+        return result
+
+    def set_metadata(self, uri: str, data: dict, secret: str):
+        """
+        Assign metadata to a given URI.
+
+        Arguments:
+            uri (str): The URI to write to
+            data (dict): The data to write to this URI
+            secret (str): The secret to use to write this metadata
+
+        Returns:
+            dict: Server JSON
+
+        """
+        if not valid_uri(uri):
+            raise ValueError(
+                f"'{uri}' is not a valid URI. URIs must be of the form [protocol]://[identifier] or [protocol]://[identifier]/[id]."
+                + f"\nValid protocols are: {PERMITTED_URIS}"
+            )
+        return requests.post(
+            self._url("/metadata"),
+            headers={"uri": uri, "secret": secret, "Content-Type": "application/json"},
+            json=data,
+        ).json()
+
+    def list_metadata(self, uri: str) -> List[dict]:
+        """
+        Get all metadata within the hierarchical tree.
+
+        For example, `list_metadata("bossdb://")` returns all metadata that is
+        associated with bossDB. `list_metadata("bossdb://my_collection")` will
+        return a list of all metadata that fall under that collection.
+
+        Arguments:
+            uri (str): The URI to list from
+
+        Returns:
+            List[dict]: A list of metadata entries
+
+        """
+ 
+    def put_file(
+        self,
+        uri: str,
+        metadata: dict,
+        file_pointer: Union[str, any],
+        secret: str = None,
+    ):
+        """
+        Upload a file with associated metadata.
+
+        For further documentation, see MossDBClient#set_metadata.
+
+        Arguments:
+            file_pointer: Either a filename (str) or a file-like object
+
+        """
+        if not valid_uri(uri):
+            raise ValueError(
+                f"'{uri}' is not a valid URI. URIs must be of the form [protocol]://[identifier] or [protocol]://[identifier]/[id]."
+                + f"\nValid protocols are: {PERMITTED_URIS}"
+            )
+        if isinstance(file_pointer, str):
+            file_pointer = open(file_pointer, "rb")
+        files = {"file": file_pointer}
+
+        return requests.put(
+            self._url("/file"),
+            files=files,
+            data={"payload": json.dumps(metadata)},
+            headers={"uri": uri, "secret": secret},
+        )
+
+    def get_file(self, uri: str, save_to_path: str = None):
+        """
+        Get a file
+
+        For further documentation, see MossDBClient#set_metadata.
+
+        Arguments:
+            file_pointer: Either a filename (str) or a file-like object
+
+        """
+        if not valid_uri(uri):
+            raise ValueError(
+                f"'{uri}' is not a valid URI. URIs must be of the form [protocol]://[identifier] or [protocol]://[identifier]/[id]."
+                + f"\nValid protocols are: {PERMITTED_URIS}"
+            )
+        if self._cache:
+            try:
+                return _cache_get(self._cache, uri, binary=True)
+            except IndexError:
+                pass
+        response = requests.get(self._url("/file"), headers={"uri": uri})
+        content = response.content
+        if save_to_path:
+            with open(save_to_path, "wb") as fh:
+                fh.write(content)
+            return
+        if self._cache:
+            _cache_set(self._cache, uri, content)
+        return content
+
+M = MossDBClient("http://mossdb")
+#Example metadata
+M.list_metadata("bossdb/witvilet2019")
+M.list_metadata("bossdb/kasthuri")

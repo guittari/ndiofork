@@ -12,6 +12,7 @@ RUN poetry install
 RUN pip install numpy 
 RUN pip install blosc 
 RUN pip install ndio
+RUN pip install git+https://github.com/aplbrain/mossDB
 COPY . .
 EXPOSE 8000
 CMD ["poetry", "run", "flask", "-A", "ndio.main:app", "run", "--host=0.0.0.0"]
